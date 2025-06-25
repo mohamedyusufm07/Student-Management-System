@@ -1,0 +1,148 @@
+package student;
+import java.util.ArrayList;
+import java.util.Scanner;
+
+public class StudentCRUDSystem {
+
+    // Blueprint (class) for Student details
+    static class Student {
+        private int studentId;
+        private String studentName;
+        private int studentAge;
+        private String studentCourse;
+
+        // Constructor to create a new student
+        public Student(int studentId, String studentName, int studentAge, String studentCourse) {
+            this.studentId = studentId;
+            this.studentName = studentName;
+            this.studentAge = studentAge;
+            this.studentCourse = studentCourse;
+        }
+
+        // Getter and Setter methods
+        public int getStudentId() {
+            return studentId;
+        }
+
+        public void setStudentName(String studentName) {
+            this.studentName = studentName;
+        }
+
+        public void setStudentAge(int studentAge) {
+            this.studentAge = studentAge;
+        }
+
+        public void setStudentCourse(String studentCourse) {
+            this.studentCourse = studentCourse;
+        }
+
+        // Display student details
+        public void showDetails() {
+            System.out.println("ID: " + studentId + ", Name: " + studentName + ", Age: " + studentAge + ", Course: " + studentCourse);
+        }
+    }
+
+    // List to hold student records
+    static ArrayList<Student> studentList = new ArrayList<>();
+    static Scanner input = new Scanner(System.in);
+    static int studentIdCounter = 1;
+
+    public static void main(String[] args) {
+        // Welcome message and menu loop
+        while (true) {
+            System.out.println("\n📘 Welcome to Student Management System 📘");
+            System.out.println("1️⃣ Add Student");
+            System.out.println("2️⃣ View All Students");
+            System.out.println("3️⃣ Update Student Details");
+            System.out.println("4️⃣ Delete Student");
+            System.out.println("5️⃣ Exit");
+            System.out.print("👉 Enter your choice: ");
+
+            int userChoice = input.nextInt();
+            input.nextLine();  // Clear the newline character
+
+            switch (userChoice) {
+                case 1: addStudent(); break;
+                case 2: viewAllStudents(); break;
+                case 3: updateStudentDetails(); break;
+                case 4: deleteStudent(); break;
+                case 5:
+                    System.out.println("👋 Exiting the program. Goodbye!");
+                    System.exit(0);
+                default:
+                    System.out.println("❌ Invalid choice. Please try again.");
+            }
+        }
+    }
+
+    // Function to add a new student
+    private static void addStudent() {
+        System.out.print("✏️ Enter Student Name: ");
+        String name = input.nextLine();
+
+        System.out.print("🔢 Enter Student Age: ");
+        int age = input.nextInt();
+        input.nextLine(); // Clear buffer
+
+        System.out.print("📚 Enter Course Name: ");
+        String course = input.nextLine();
+
+        // Create new student and add to list
+        Student newStudent = new Student(studentIdCounter++, name, age, course);
+        studentList.add(newStudent);
+        System.out.println("✅ Student added successfully!");
+    }
+
+    // Function to show all student records
+    private static void viewAllStudents() {
+        if (studentList.isEmpty()) {
+            System.out.println("📭 No student records available.");
+        } else {
+            System.out.println("📋 Student List:");
+            for (Student student : studentList) {
+                student.showDetails();
+            }
+        }
+    }
+
+    // Function to update a student's details
+    private static void updateStudentDetails() {
+        System.out.print("🔎 Enter Student ID to update: ");
+        int id = input.nextInt();
+        input.nextLine(); // Clear buffer
+
+        for (Student student : studentList) {
+            if (student.getStudentId() == id) {
+                System.out.print("✏️ Enter New Name: ");
+                student.setStudentName(input.nextLine());
+
+                System.out.print("🔢 Enter New Age: ");
+                student.setStudentAge(input.nextInt());
+                input.nextLine(); // Clear buffer
+
+                System.out.print("📚 Enter New Course: ");
+                student.setStudentCourse(input.nextLine());
+
+                System.out.println("✅ Student updated successfully!");
+                return;
+            }
+        }
+        System.out.println("❌ No student found with ID: " + id);
+    }
+
+    // Function to delete a student by ID
+    private static void deleteStudent() {
+        System.out.print("🗑️ Enter Student ID to delete: ");
+        int id = input.nextInt();
+        input.nextLine(); // Clear buffer
+
+        for (Student student : studentList) {
+            if (student.getStudentId() == id) {
+                studentList.remove(student);
+                System.out.println("✅ Student deleted successfully!");
+                return;
+            }
+        }
+        System.out.println("❌ No student found with ID: " + id);
+    }
+}
